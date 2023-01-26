@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+import { createAuthUserWithEmailAndPassword } from '../../utils/Firebase.utils'
+
 const defaultFormFields = {
     displayName: '',
     email: '',
@@ -12,21 +14,43 @@ const SignUp = () => {
 
     const { displayName, email, password, confirmPassword } = formFields
 
-    console.log(formFields)
+    const resetFormFields = () => {
+        setFormFields(defaultFormFields)
+    }
+
     const handleChange = event => {
         const { name, value } = event.target
 
         setFormFields({ ...formFields, [name]: value })
     }
 
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (password !== confirmPassword) {
+            alert('Passwords do not match');
+            return;
+        }
+
+        try {
+            const { user } = await createAuthUserWithEmailAndPassword(email, password)
+            console.log(user)
+        } catch (error) {
+            if (error.code === 'auth/email-already-in-use') {
+                alert('Cannot create user, email already in use');
+            } else {
+                console.log('user creation encountered an error', error);
+            }
+        }
+    }
+
     return (
         <div>
             <h2>Sign up with your Email and Password</h2>
-            <form onSubmit={() => { console.log('value') }}>
+            <form onSubmit={handleSubmit}>
                 <label>Display Name</label>
                 <input
                     type='text'
-                    required
+                    // required
                     onChange={handleChange}
                     name='displayName'
                     value={displayName}
@@ -35,7 +59,7 @@ const SignUp = () => {
                 <label>Email</label>
                 <input
                     type='email'
-                    required
+                    // required
                     onChange={handleChange}
                     name='email'
                     value={email}
@@ -44,7 +68,7 @@ const SignUp = () => {
                 <label>Password</label>
                 <input
                     type='password'
-                    required
+                    // required
                     onChange={handleChange}
                     name='password'
                     value={password}
@@ -53,7 +77,7 @@ const SignUp = () => {
                 <label>Confirm Password</label>
                 <input
                     type='password'
-                    required
+                    // required
                     onChange={handleChange}
                     name='confirmPassword'
                     value={confirmPassword}
