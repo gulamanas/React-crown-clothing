@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 
-import { createAuthUserWithEmailAndPassword } from '../../utils/Firebase.utils';
+import {
+  createAuthUserWithEmailAndPassword,
+  createUserDocumentFromAuth,
+} from '../../utils/Firebase.utils';
+import FormInput from '../form-input/FormInput';
 
 const defaultFormFields = {
   displayName: '',
@@ -16,6 +20,7 @@ const SignUp = () => {
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
+    alert('Users successfully created');
   };
 
   const handleChange = event => {
@@ -36,7 +41,10 @@ const SignUp = () => {
         email,
         password
       );
-      console.log(user);
+      // console.log(user);
+
+      await createUserDocumentFromAuth(user, { displayName });
+      resetFormFields();
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
         alert('Cannot create user, email already in use');
@@ -50,37 +58,37 @@ const SignUp = () => {
     <div>
       <h2>Sign up with your Email and Password</h2>
       <form onSubmit={handleSubmit}>
-        <label>Display Name</label>
-        <input
+        <FormInput
+          label='Display Name'
           type='text'
-          // required
+          required
           onChange={handleChange}
           name='displayName'
           value={displayName}
         />
 
-        <label>Email</label>
-        <input
+        <FormInput
+          label='Email'
           type='email'
-          // required
+          required
           onChange={handleChange}
           name='email'
           value={email}
         />
 
-        <label>Password</label>
-        <input
+        <FormInput
+          label='Password'
           type='password'
-          // required
+          required
           onChange={handleChange}
           name='password'
           value={password}
         />
 
-        <label>Confirm Password</label>
-        <input
+        <FormInput
+          label='Confirm Password'
           type='password'
-          // required
+          required
           onChange={handleChange}
           name='confirmPassword'
           value={confirmPassword}
