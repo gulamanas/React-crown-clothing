@@ -4,7 +4,9 @@ import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
 } from '../../utils/Firebase.utils';
+import Button from '../button/Button';
 import FormInput from '../form-input/FormInput';
+import './sign-up.styles.scss';
 
 const defaultFormFields = {
   displayName: '',
@@ -55,8 +57,9 @@ const SignUp = () => {
   };
 
   return (
-    <div>
-      <h2>Sign up with your Email and Password</h2>
+    <div className='sign-up-container'>
+      <h2>Don't have an acoount?</h2>
+      <span>Sign up with your Email and Password</span>
       <form onSubmit={handleSubmit}>
         <FormInput
           label='Display Name'
@@ -93,7 +96,8 @@ const SignUp = () => {
           name='confirmPassword'
           value={confirmPassword}
         />
-        <button type='submit'>Sign Up</button>
+        <Button type='submit'>Sign Up</Button>
+        {/* <button type='submit'>Sign Up</button> */}
       </form>
     </div>
   );
