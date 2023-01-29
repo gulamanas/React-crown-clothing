@@ -1,4 +1,3 @@
-// import SHOP_DATA from '../../shop-data.json';
 import './shop.styles.scss';
 import { useContext } from 'react';
 import ProductCard from '../../component/product-card/ProductCard';
